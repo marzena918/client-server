@@ -1,6 +1,6 @@
 namespace client_server
 {
-    public class WeatherForecast
+    public class Oferta
     {
         public DateTime Date { get; set; }
 
