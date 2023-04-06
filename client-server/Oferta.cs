@@ -2,12 +2,11 @@ namespace client_server
 {
     public class Oferta
     {
-        public DateTime Date { get; set; }
-
-        public int TemperatureC { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-
-        public string? Summary { get; set; }
+        public double cena { get; set; }
+        public string opis { get; set; }
+        public byte[] zdjecie { get; set; }
+        public DateTime dataUtworzenia { get; set; }
+        public DateTime dataWygasnieia { get; set; }
+        public bool zarezerwowane { get; set; } 
     }
 }
