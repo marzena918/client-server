@@ -16,6 +16,7 @@ namespace client_server.Controllers
         [HttpGet("/allOferts")]
         public IEnumerable<Oferta> GetAllOfferts()
         {
+            _logger.LogInformation("test");
             return oferty;
         }
          
