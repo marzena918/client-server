@@ -17,7 +17,7 @@ namespace client_server.Controllers
         public IEnumerable<Oferta> GetAllOfferts()
         {
             _logger.LogInformation("test");
-            //test2
+            
             return oferty;
         }
          
