@@ -37,5 +37,37 @@ namespace client_server.Controllers
             });
             return niezakoczone;
         }
+
+        [HttpPost("/zarezerwuj/{id}")]
+        public void zarezerwuj(int id, [FromQuery] string opisRezerwacji)
+        {
+            _logger.LogInformation("rezerwacja");
+
+            var oferta = oferty.Find(oferta => oferta.id == id);
+            if (oferta != null)
+            {
+                oferta.zarezerwowane = true;
+                oferta.opisRezerwacji = opisRezerwacji;
+            }
+        }
+
+        [HttpPost("/sprzedaj/{id}")]
+        public string sprzedaj(int id )
+        {
+            _logger.LogInformation("sprzedawanie");
+
+            var oferta = oferty.Find(oferta => oferta.id == id);
+            if (oferta != null && oferta.zakonczona == false)
+            {
+                oferta.zakonczona = true;
+                oferta.dataSprzedarzy = DateTime.Now;
+                return "OK";
+
+            }
+
+            return "ERROR";
+
+        }
+
     }
 }
