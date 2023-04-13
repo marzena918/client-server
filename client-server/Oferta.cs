@@ -8,5 +8,6 @@ namespace client_server
         public DateTime dataUtworzenia { get; set; }
         public DateTime dataWygasnieia { get; set; }
         public bool zarezerwowane { get; set; } 
+        public bool zakonczona { get; set; }
     }
 }
