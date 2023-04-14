@@ -28,15 +28,17 @@ namespace client_server.Controllers
             _logger.LogInformation("pobierz wszystkie nie zakoñczone oferty");
 
             var niezakoczone = new List<Oferta>();
+            var now = DateTime.Now;
             oferty.ForEach(o =>
             {
-                if (!o.zakonczona)
+                if (!o.zakonczona && o.dataWygasnieia > now)
                 {
                     niezakoczone.Add(o);
                 }
             });
             return niezakoczone;
         }
+         
 
         [HttpPost("/zarezerwuj/{id}")]
         public void zarezerwuj(int id, [FromQuery] string opisRezerwacji)
