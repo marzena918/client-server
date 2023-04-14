@@ -22,7 +22,7 @@ namespace client_server.Controllers
             return oferty;
         }
 
-        [HttpGet("/all-not-closed-offers")]
+        [HttpGet("/sprzedawca/all-not-closed-offers")]
         public IEnumerable<Oferta> GetAllNotClosedOffers()
         {
             _logger.LogInformation("pobierz wszystkie nie zakoñczone oferty");
@@ -40,7 +40,7 @@ namespace client_server.Controllers
         }
          
 
-        [HttpPost("/zarezerwuj/{id}")]
+        [HttpPost("/sprzedawca/zarezerwuj/{id}")]
         public void zarezerwuj(int id, [FromQuery] string opisRezerwacji)
         {
             _logger.LogInformation("rezerwacja");
@@ -53,7 +53,7 @@ namespace client_server.Controllers
             }
         }
 
-        [HttpPost("/sprzedaj/{id}")]
+        [HttpPost("/sprzedawca/sprzedaj/{id}")]
         public string sprzedaj(int id )
         {
             _logger.LogInformation("sprzedawanie");
