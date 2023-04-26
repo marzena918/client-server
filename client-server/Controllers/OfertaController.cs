@@ -8,6 +8,7 @@ namespace client_server.Controllers
     {
         private readonly ILogger<OfertaController> _logger;
         private List<Oferta> oferty = new List<Oferta>();
+        private int id = 1;
 
         public OfertaController(ILogger<OfertaController> logger)
         {
@@ -22,6 +23,16 @@ namespace client_server.Controllers
             return oferty;
         }
 
+        [HttpPost("/add")]
+        public void dodaj(Oferta oferta)
+        {
+            oferta.id = id++;
+            oferta.dataUtworzenia = DateTime.Now;
+            oferta.zarezerwowane = false;
+            oferta.dataWygasnieia = DateTime.Now.AddMonths(2);
+            oferty.Add(oferta);
+
+        }
         [HttpGet("/sprzedawca/all-not-closed-offers")]
         public IEnumerable<Oferta> GetAllNotClosedOffers()
         {
