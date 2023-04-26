@@ -58,7 +58,7 @@ namespace client_server.Controllers
         [HttpPost("/sprzedawca/odrezerwuj/{id}")]
         public string zarezerwuj(int id)
         {
-            _logger.LogInformation("rezerwacja");
+            _logger.LogInformation("orezerowowywanie");
 
             var oferta = oferty.Find(oferta => oferta.id == id);
             if (oferta != null)
