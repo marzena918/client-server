@@ -41,7 +41,7 @@ namespace client_server.Controllers
          
 
         [HttpPost("/sprzedawca/zarezerwuj/{id}")]
-        public void zarezerwuj(int id, [FromQuery] string opisRezerwacji)
+        public string zarezerwuj(int id, [FromQuery] string opisRezerwacji)
         {
             _logger.LogInformation("rezerwacja");
 
@@ -50,7 +50,10 @@ namespace client_server.Controllers
             {
                 oferta.zarezerwowane = true;
                 oferta.opisRezerwacji = opisRezerwacji;
+                return "OK";
             }
+
+            return "ERROR";
         }
 
         [HttpPost("/sprzedawca/sprzedaj/{id}")]
