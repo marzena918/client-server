@@ -56,6 +56,22 @@ namespace client_server.Controllers
             return "ERROR";
         }
 
+        [HttpPost("/sprzedawca/odrezerwuj/{id}")]
+        public string zarezerwuj(int id)
+        {
+            _logger.LogInformation("rezerwacja");
+
+            var oferta = oferty.Find(oferta => oferta.id == id);
+            if (oferta != null)
+            {
+                oferta.zarezerwowane = false;
+                oferta.opisRezerwacji = "";
+                return "OK";
+            }
+
+            return "ERROR";
+        }
+
         [HttpPost("/sprzedawca/sprzedaj/{id}")]
         public string sprzedaj(int id )
         {
