@@ -52,7 +52,6 @@ namespace client_server.Controllers
                 oferta.opisRezerwacji = opisRezerwacji;
                 return "OK";
             }
-
             return "ERROR";
         }
 
@@ -68,7 +67,6 @@ namespace client_server.Controllers
                 oferta.opisRezerwacji = "";
                 return "OK";
             }
-
             return "ERROR";
         }
 
@@ -83,9 +81,7 @@ namespace client_server.Controllers
                 oferta.zakonczona = true;
                 oferta.dataSprzedarzy = DateTime.Now;
                 return "OK";
-
             }
-
             return "ERROR";
 
         }
