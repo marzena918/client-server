@@ -7,12 +7,12 @@ namespace client_server.Controllers
     public class OfertaController : ControllerBase
     {
         private readonly ILogger<OfertaController> _logger;
-        private List<Oferta> oferty = new List<Oferta>();
+        private readonly List<Oferta> _oferty;
         private int id = 1;
 
-        public OfertaController(ILogger<OfertaController> logger)
-        {
+        public OfertaController(ILogger<OfertaController> logger ) {
             _logger = logger;
+            _oferty = new List<Oferta>();
         }
 
         [HttpGet("/allOffers")]
@@ -20,7 +20,8 @@ namespace client_server.Controllers
         {
             _logger.LogInformation("test");
 
-            return oferty;
+
+            return _oferty;
         }
        
         [HttpPost("/add")]
@@ -30,17 +31,18 @@ namespace client_server.Controllers
             oferta.dataUtworzenia = DateTime.Now;
             oferta.zarezerwowane = false;
             oferta.dataWygasnieia = DateTime.Now.AddMonths(2);
-            oferty.Add(oferta);
+            _oferty.Add(oferta);
+            _logger.LogInformation(_oferty.ToString());
 
         }
         [HttpGet("/sprzedawca/all-not-closed-offers")]
         public IEnumerable<Oferta> GetAllNotClosedOffers()
         {
-            _logger.LogInformation("pobierz wszystkie nie zakoñczone oferty");
+            _logger.LogInformation("pobierz wszystkie nie zakoñczone _oferty");
 
             var niezakoczone = new List<Oferta>();
             var now = DateTime.Now;
-            oferty.ForEach(o =>
+            _oferty.ForEach(o =>
             {
                 if (o.dataSprzedarzy == null && o.dataWygasnieia > now)
                 {
@@ -56,7 +58,7 @@ namespace client_server.Controllers
         {
             _logger.LogInformation("rezerwacja");
 
-            var oferta = oferty.Find(oferta => oferta.id == id);
+            var oferta = _oferty.Find(oferta => oferta.id == id);
             if (oferta != null)
             {
                 oferta.zarezerwowane = true;
@@ -71,7 +73,7 @@ namespace client_server.Controllers
         {
             _logger.LogInformation("orezerowowywanie");
 
-            var oferta = oferty.Find(oferta => oferta.id == id);
+            var oferta = _oferty.Find(oferta => oferta.id == id);
             if (oferta != null)
             {
                 oferta.zarezerwowane = false;
@@ -86,7 +88,7 @@ namespace client_server.Controllers
         {
             _logger.LogInformation("sprzedawanie");
 
-            var oferta = oferty.Find(oferta => oferta.id == id);
+            var oferta = _oferty.Find(oferta => oferta.id == id);
             if (oferta != null && oferta.dataSprzedarzy == null)
             {
                 oferta.dataSprzedarzy = DateTime.Now;

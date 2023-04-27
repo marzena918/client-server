@@ -1,31 +1,55 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title>MM</title>
+	<meta charset="utf-8"/>
+	<title>MM</title>
 </head>
 <body>
-    
-    <input type="number" id="cena" placeholder="cena" /> 
-    <input type="text" id="zdjecie" placeholder="url zdjecie"/>
-    <textarea id="opis" placeholder="opis"></textarea>
-    <button onclick="zapiszOferte()">Zapisz Oferte</button>
 
-    <table id="allOffers"></table>
+<input type="number" id="cena" placeholder="cena"/>
+<input type="text" id="zdjecie" placeholder="url zdjecie"/>
+<textarea id="opis" placeholder="opis"></textarea>
+<button onclick="zapiszOferte()">Zapisz Oferte</button>
+
+<table id="allOffers">
+	<tr>
+		<th>Opis</th><th>cena</th><th>zdjecie</th><th>Akcja</th>
+	</tr>
+</table>
 <script>
-        async function zapiszOferte(){
-            const cena = +document.getElementById("cena").value;
-            const zdjecie = document.getElementById("zdjecie").value;
-            const opis = document.getElementById("opis").value;
-            await fetch("/add", {
-                method: 'POST',
-                body: JSON.stringify({ cena: cena, opis: opis, zdjecie: zdjecie }),
-                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
-            });
+    async function zapiszOferte(){
+        const cena = +document.getElementById("cena").value;
+        const zdjecie = document.getElementById("zdjecie").value;
+        const opis = document.getElementById("opis").value;
+        await fetch("/add", {
+            method: 'POST',
+            body: JSON.stringify({ cena: cena, opis: opis, zdjecie: zdjecie }),
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+        });
+        alert("Dodano nową ofertę");
+	}
+    async function odswiezListe() {
 
+        const allOferts = await (await fetch("/allOffers", { method: "GET" })).json();
+        const tabelka = document.getElementById("allOffers");
+        while (tabelka.rows.length > 1) {
+            tabelka.deleteRow(1);
+        }
+        for (const j of allOferts) {
+            const row = tabelka.insertRow();
+            row.insertCell().innerHTML = j.opis;
+            row.insertCell().innerHTML = j.cena;
+            row.insertCell().innerHTML = `<img src="${j.zdjecie}">`;
+            row.insertCell().innerHTML = `<button onclick="usun(${j.id})">Usun</button>`;
 
         }
-        fetch("/allOffers", { method: "GET" });
+    }
+        async function usun(id) {
+            await fetch(`/usun/${id}`, { method: 'DELETE' });
+            alert('usunieto');
+            odswiezListe();
+        }
+    odswiezListe();
     </script>
 </body>
 </html>
