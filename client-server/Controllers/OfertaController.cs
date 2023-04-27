@@ -22,9 +22,9 @@ namespace client_server.Controllers
 
             return oferty;
         }
-
+       
         [HttpPost("/add")]
-        public void dodaj(Oferta oferta)
+        public void dodaj([FromBody] Oferta oferta)
         {
             oferta.id = id++;
             oferta.dataUtworzenia = DateTime.Now;
@@ -42,7 +42,7 @@ namespace client_server.Controllers
             var now = DateTime.Now;
             oferty.ForEach(o =>
             {
-                if (!o.zakonczona && o.dataWygasnieia > now)
+                if (o.dataSprzedarzy == null && o.dataWygasnieia > now)
                 {
                     niezakoczone.Add(o);
                 }
@@ -67,7 +67,7 @@ namespace client_server.Controllers
         }
 
         [HttpPost("/sprzedawca/odrezerwuj/{id}")]
-        public string zarezerwuj(int id)
+        public string odrezerwuj(int id)
         {
             _logger.LogInformation("orezerowowywanie");
 
@@ -87,9 +87,8 @@ namespace client_server.Controllers
             _logger.LogInformation("sprzedawanie");
 
             var oferta = oferty.Find(oferta => oferta.id == id);
-            if (oferta != null && oferta.zakonczona == false)
+            if (oferta != null && oferta.dataSprzedarzy == null)
             {
-                oferta.zakonczona = true;
                 oferta.dataSprzedarzy = DateTime.Now;
                 return "OK";
             }

@@ -5,8 +5,26 @@
     <title>MM</title>
 </head>
 <body>
-    Dodaj
-    <script>
+    
+    <input type="number" id="cena" placeholder="cena" /> 
+    <input type="text" id="zdjecie" placeholder="url zdjecie"/>
+    <textarea id="opis" placeholder="opis"></textarea>
+    <button onclick="zapiszOferte()">Zapisz Oferte</button>
+
+    <table id="allOffers"></table>
+<script>
+        async function zapiszOferte(){
+            const cena = +document.getElementById("cena").value;
+            const zdjecie = document.getElementById("zdjecie").value;
+            const opis = document.getElementById("opis").value;
+            await fetch("/add", {
+                method: 'POST',
+                body: JSON.stringify({ cena: cena, opis: opis, zdjecie: zdjecie }),
+                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+            });
+
+
+        }
         fetch("/allOffers", { method: "GET" });
     </script>
 </body>
