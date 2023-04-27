@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>sprzedawca</title>
+</head>
+<body>
+
+<table id="allAvaliableOffers">
+	<tr>
+		<th>Opis</th>
+		<th>cena</th>
+		<th>zdjecie</th>
+		<th>rezerwacja</th>
+		<th>Akcja</th>
+	</tr>
+</table>
+</body>
+<script>
+    async function odswiezTabelke() {
+        const rezerwacja = await (await fetch("/sprzedawca/zarezerwuj/<id>")).text();
+        const allOferts = await (await fetch("/sprzedawca/all-not-closed-offers", { method: "GET" })).json();
+        const tabelka = document.getElementById("allAvaliableOffers");
+        while (tabelka.rows.length > 1) {
+            tabelka.deleteRow(1);
+        }
+        for (const j of allOferts) {
+            const row = tabelka.insertRow();
+            const sprzedajButton = document.createElement("button");
+            sprzedajButton.innerHTML = 'sprzedaj';
+            sprzedajButton.onclik = () => sprzedaj();
+            row.insertCell().innerHTML = j.opis;
+            row.insertCell().innerHTML = j.cena;
+            row.insertCell().innerHTML = `<img src="${j.zdjecie}">`;
+            row.insertCell().innerHTML = "";
+            row.insertCell().appendChild(sprzedajButton);
+            const buttonZarezerwuj = document.createElement("button");
+            buttonZarezerwuj.onclick = () => zarezerwuj(`${j.id}`);
+            buttonZarezerwuj.innerHTML = 'zarezerwuj';
+            const buttonOdrezerwuj = document.createElement("button");
+            buttonOdrezerwuj.innerHTML = 'odrezerwuj';
+            buttonOdrezerwuj.onclick = () => odrezerwuj(`${j.id}`);
+            //row.cells[4].appendChild(buttonZarezerwuj);
+            //const buttonZarezerwuj.innerHTML = `<button onclick="zarezerwuj(${j.id})">zarezerwuj</button>`;
+            //const buttonOdrezerwuj.innerHTML = `<button onclick="odrezerwuj(${j.id})">odrezerwuj</button>`;
+            
+            if (rezerwacja == "OK") {
+                row.cells[3].style.background = "red";
+                
+                row.cells[4].appendChild(buttonZarezerwuj);
+            }
+            else {
+                row.cells[3].style.background = "green";
+                row.cells[4].appendChild(buttonOdrezerwuj);
+            }
+        }
+        
+	}
+    odswiezTabelke();
+</script>
+</html>
