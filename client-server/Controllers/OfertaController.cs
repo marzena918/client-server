@@ -19,22 +19,6 @@ namespace client_server.Controllers
         public IEnumerable<Oferta> GetAllOffers()
         {
             _logger.LogInformation("test");
-            // Oferta oferta1 = new Oferta();
-            // oferta1.id = 1;
-            // oferta1.cena = 1200;
-            // oferta1.dataSprzedarzy = null;
-            // oferta1.dataUtworzenia = DateTime.Now;
-            // oferta1.dataWygasnieia = DateTime.Now.AddMonths(3);
-            // oferta1.opis = "kjgfddfghjkjhgxfgh";
-            // oferta1.zarezerwowane = false;
-            // oferta1.zdjecie = "http://rosnutki.pl/wp-content/uploads/2018/06/kolorowanki_rosnutki_5.jpg";
-            // _oferty.Add(oferta1);
-            // Oferta oferta2 = new Oferta();
-            // oferta2.id = 2;
-            // oferta2.cena = 12000;
-            // oferta2.opis = "kkhjkhhhh";
-            // oferta2.zdjecie = "https://www.supercoloring.com/sites/default/files/styles/coloring_medium/public/cif/2017/12/fairy-coloring-page.png";
-            // _oferty.Add(oferta2);
             return _oferty;
         }
 
@@ -42,7 +26,6 @@ namespace client_server.Controllers
 
         public void usun(int id)
         {
-            
             for(int i = 0; i<_oferty.Count; i++)
             {
                 if (_oferty[i].id == id)
@@ -50,7 +33,6 @@ namespace client_server.Controllers
                     _oferty.RemoveAt(i);
                     break;
                 }
-                
             }
         }
 
