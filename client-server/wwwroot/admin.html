@@ -11,23 +11,12 @@
 <textarea id="opis" placeholder="opis"></textarea>
 <button onclick="zapiszOferte()">Zapisz Oferte</button>
 
-<table id="allOffers">
+<table id="allOffers" border="1px">
 	<tr>
 		<th>Opis</th><th>cena</th><th>zdjecie</th><th>Akcja</th>
 	</tr>
 </table>
 <script>
-    async function zapiszOferte(){
-        const cena = +document.getElementById("cena").value;
-        const zdjecie = document.getElementById("zdjecie").value;
-        const opis = document.getElementById("opis").value;
-        await fetch("/add", {
-            method: 'POST',
-            body: JSON.stringify({ cena: cena, opis: opis, zdjecie: zdjecie }),
-            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
-        });
-        alert("Dodano nową ofertę");
-	}
     async function odswiezListe() {
 
         const allOferts = await (await fetch("/allOffers", { method: "GET" })).json();
@@ -44,12 +33,27 @@
 
         }
     }
+
+    async function zapiszOferte(){
+        const cena = +document.getElementById("cena").value;
+        const zdjecie = document.getElementById("zdjecie").value;
+        const opis = document.getElementById("opis").value;
+        await fetch("/add", {
+            method: 'POST',
+            body: JSON.stringify({ cena: cena, opis: opis, zdjecie: zdjecie }),
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+        });
+        alert("Dodano nową ofertę");
+        odswiezListe();
+	}
+    
         async function usun(id) {
             await fetch(`/usun/${id}`, { method: 'DELETE' });
             alert('usunieto');
             odswiezListe();
         }
     odswiezListe();
-    </script>
+    
+</script>
 </body>
 </html>

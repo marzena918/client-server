@@ -65,24 +65,7 @@ namespace client_server.Controllers
             _logger.LogInformation(_oferty.ToString());
 
         }
-
-       [HttpGet("/sprzedawca/sprawdz-czy-zarezerwowane/{id}")]
-       public string sprawdzCzyZarezerwowane(int id)
-       {
-           for (int i = 0; i < _oferty.Count; i++)
-           {
-               if (_oferty[i].id == id)
-               {
-                   if (_oferty[i].zarezerwowane == true)
-                   {
-                       return "OK";
-                   }
-                   
-               }
-           }
-
-           return "NOT";
-       }
+ 
 
        [HttpGet("/sprzedawca/all-not-closed-offers")]
         public IEnumerable<Oferta> GetAllNotClosedOffers()

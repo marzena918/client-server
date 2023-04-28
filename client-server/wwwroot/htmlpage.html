@@ -6,19 +6,18 @@
 </head>
 <body>
 
-<table id="allAvaliableOffers">
+<table id="allAvaliableOffers" border="1px">
 	<tr>
 		<th>Opis</th>
 		<th>cena</th>
-		<th>zdjecie</th>
-		<th>rezerwacja</th>
+		<th>zdjecie</th> 
 		<th>Akcja</th>
 	</tr>
 </table>
 </body>
 <script>
     async function sprzedaj(id) {
-        await fetch("/sprzedawca/sprzedaj / { id }")
+        await fetch(`/sprzedawca/sprzedaj/${ id }`, {method: 'POST'})
     }
 
     async function odswiezTabelke() {
@@ -28,16 +27,17 @@
         while (tabelka.rows.length > 1) {
             tabelka.deleteRow(1);
         }
-        for (const j of allOferts) {
-            const rezerwacja = await (await fetch(`/sprzedawca/sprawdz-czy-zarezerwowane/${j.id}`)).text();
+        for (const j of allOferts) { 
             const row = tabelka.insertRow();
             const sprzedajButton = document.createElement("button");
             sprzedajButton.innerHTML = 'sprzedaj';
-            sprzedajButton.onclik = () => sprzedaj(`${j.id}`);
+            sprzedajButton.onclick = () => {
+                sprzedaj(`${j.id}`)
+                odswiezTabelke();
+            }
             row.insertCell().innerHTML = j.opis;
             row.insertCell().innerHTML = j.cena;
             row.insertCell().innerHTML = `<img src="${j.zdjecie}">`;
-            row.insertCell().innerHTML = "";
             row.insertCell().appendChild(sprzedajButton);
             const buttonZarezerwuj = document.createElement("button");
             buttonZarezerwuj.onclick = () => zarezerwuj(`${j.id}`);
@@ -47,14 +47,12 @@
             buttonOdrezerwuj.onclick = () => odrezerwuj(`${j.id}`);
           
             
-            if (rezerwacja == "OK") {
-                row.cells[3].style.background = "green";
-                
-                row.cells[4].appendChild(buttonZarezerwuj);
+            if (j.zarezerwowane === true) {
+                row.style.background = "#ff000015";
+                row.appendChild(buttonOdrezerwuj);
             }
-            else {
-                row.cells[3].style.background = "red";
-                row.cells[4].appendChild(buttonOdrezerwuj);
+            else {  
+                row.cells[3].appendChild(buttonZarezerwuj);
             }
         }
         
