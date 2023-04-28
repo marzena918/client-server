@@ -5,15 +5,17 @@
     <title>sprzedawca</title>
 </head>
 <body>
-
-<table id="allAvaliableOffers" border="1px">
-	<tr>
-		<th>Opis</th>
-		<th>cena</th>
-		<th>zdjecie</th> 
-		<th>Akcja</th>
-	</tr>
-</table>
+    <div style="display: flex">
+        <table id="allAvaliableOffers" border="1px">
+            <tr>
+                <th>Opis</th>
+                <th>cena</th>
+                <th>zdjecie</th>
+                <th>Akcja</th>
+            </tr>
+        </table>
+        <div id="miejsce_na_obrazek"></div>
+    </div>
 </body>
 <script>
     async function sprzedaj(id) {
@@ -35,7 +37,7 @@
             sprzedajButton.onclick = () => sprzedaj(j.id);
             row.insertCell().innerHTML = j.opis;
             row.insertCell().innerHTML = j.cena;
-            row.insertCell().innerHTML = `<img src="${j.zdjecie}" style="max-height:50px">`;
+            row.insertCell().innerHTML = `<img src="${j.zdjecie}" style="max-height:50px" onclick="pokazObrazek('${j.zdjecie}')">`;
             row.insertCell().appendChild(sprzedajButton);
             const buttonZarezerwuj = document.createElement("button");
             buttonZarezerwuj.onclick = () => zarezerwuj(j.id);
@@ -62,9 +64,12 @@
         await fetch(`/sprzedawca/odrezerwuj/${id}`, { method: 'POST' });
         odswiezTabelke();
     }
-
+    function pokazObrazek(zdjecie) {
+        document.getElementById("miejsce_na_obrazek").innerHTML = `<img src="${zdjecie}">`;
+    }
 
     odswiezTabelke();
+
 
 </script>
 </html>

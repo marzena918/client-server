@@ -10,12 +10,17 @@
 <input type="text" id="zdjecie" placeholder="url zdjecie"/>
 <textarea id="opis" placeholder="opis"></textarea>
 <button onclick="zapiszOferte()">Zapisz Oferte</button>
-
-<table id="allOffers" border="1px">
-	<tr>
-		<th>Opis</th><th>cena</th><th>zdjecie</th><th>Akcja</th>
-	</tr>
-</table>
+<div style="display:flex">
+    <table id="allOffers" border="1px">
+        <tr>
+            <th>Opis</th>
+            <th>cena</th>
+            <th>zdjecie</th>
+	        <th>Akcja</th>
+        </tr>
+    </table>
+	<div id="miejsce_na_obrazek"></div>
+</div>
 <script>
     async function odswiezListe() {
 
@@ -28,7 +33,7 @@
             const row = tabelka.insertRow();
             row.insertCell().innerHTML = `<textarea>${j.opis}</textarea>`;
             row.insertCell().innerHTML = j.cena;
-            row.insertCell().innerHTML = `<img src="${j.zdjecie}" style="max-height:50px">`;
+            row.insertCell().innerHTML = `<img src="${j.zdjecie}" style="max-height:50px" onclick="pokazObrazek('${j.zdjecie}')">`;
             row.insertCell().innerHTML = `<button onclick="usun(${j.id})">Usun</button>`;
 
         }
@@ -51,7 +56,10 @@
             await fetch(`/usun/${id}`, { method: 'DELETE' });
             alert('usunieto');
             odswiezListe();
-        }
+    }
+    function pokazObrazek(zdjecie) {
+        document.getElementById("miejsce_na_obrazek").innerHTML = `<img src="${zdjecie}">`;
+    }
     odswiezListe();
     
 </script>
