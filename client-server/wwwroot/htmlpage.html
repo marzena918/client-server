@@ -17,7 +17,8 @@
 </body>
 <script>
     async function sprzedaj(id) {
-        await fetch(`/sprzedawca/sprzedaj/${ id }`, {method: 'POST'})
+        await fetch(`/sprzedawca/sprzedaj/${id}`, { method: 'POST' })
+        odswiezTabelke();
     }
 
     async function odswiezTabelke() {
@@ -31,32 +32,38 @@
             const row = tabelka.insertRow();
             const sprzedajButton = document.createElement("button");
             sprzedajButton.innerHTML = 'sprzedaj';
-            sprzedajButton.onclick = () => {
-                sprzedaj(`${j.id}`)
-                odswiezTabelke();
-            }
+            sprzedajButton.onclick = () => sprzedaj(j.id);
             row.insertCell().innerHTML = j.opis;
             row.insertCell().innerHTML = j.cena;
-            row.insertCell().innerHTML = `<img src="${j.zdjecie}">`;
+            row.insertCell().innerHTML = `<img src="${j.zdjecie}" style="max-height:50px">`;
             row.insertCell().appendChild(sprzedajButton);
             const buttonZarezerwuj = document.createElement("button");
-            buttonZarezerwuj.onclick = () => zarezerwuj(`${j.id}`);
+            buttonZarezerwuj.onclick = () => zarezerwuj(j.id);
             buttonZarezerwuj.innerHTML = 'zarezerwuj';
             const buttonOdrezerwuj = document.createElement("button");
             buttonOdrezerwuj.innerHTML = 'odrezerwuj';
-            buttonOdrezerwuj.onclick = () => odrezerwuj(`${j.id}`);
+            buttonOdrezerwuj.onclick = () => odrezerwuj(j.id);
           
             
             if (j.zarezerwowane === true) {
                 row.style.background = "#ff000015";
-                row.appendChild(buttonOdrezerwuj);
+                row.cells[3].appendChild(buttonOdrezerwuj);
             }
             else {  
                 row.cells[3].appendChild(buttonZarezerwuj);
             }
-        }
-        
-	}
+        }    
+    }
+    async function zarezerwuj(id) {
+        await fetch(`/sprzedawca/zarezerwuj/${id}?opisRezerwacji=brak`, { method: 'POST' });
+        odswiezTabelke();
+    }
+    async function odrezerwuj(id) {
+        await fetch(`/sprzedawca/odrezerwuj/${id}`, { method: 'POST' });
+        odswiezTabelke();
+    }
+
+
     odswiezTabelke();
 
 </script>

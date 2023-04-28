@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8"/>
-	<title>MM</title>
+	<title>admin</title>
 </head>
 <body>
 
@@ -26,9 +26,9 @@
         }
         for (const j of allOferts) {
             const row = tabelka.insertRow();
-            row.insertCell().innerHTML = j.opis;
+            row.insertCell().innerHTML = `<textarea>${j.opis}</textarea>`;
             row.insertCell().innerHTML = j.cena;
-            row.insertCell().innerHTML = `<img src="${j.zdjecie}">`;
+            row.insertCell().innerHTML = `<img src="${j.zdjecie}" style="max-height:50px">`;
             row.insertCell().innerHTML = `<button onclick="usun(${j.id})">Usun</button>`;
 
         }
