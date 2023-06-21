@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace client_server.Controllers
 {
@@ -7,7 +8,7 @@ namespace client_server.Controllers
     public class OfertaController : ControllerBase
     {
         private readonly ILogger<OfertaController> _logger;
-        private static readonly List<Oferta> _oferty = new List<Oferta>();
+        private static readonly List<Oferta> _oferty = ReadFromJsonFile();
         private static int id = 1;
 
         public OfertaController(ILogger<OfertaController> logger ) {
@@ -34,6 +35,8 @@ namespace client_server.Controllers
                     break;
                 }
             }
+
+            WriteToJsonFile();
         }
 
         [HttpPost("/add")]
@@ -45,7 +48,7 @@ namespace client_server.Controllers
             oferta.dataWygasnieia = DateTime.Now.AddMonths(2);
             _oferty.Add(oferta);
             _logger.LogInformation(_oferty.ToString());
-
+            WriteToJsonFile();
         }
  
 
@@ -77,6 +80,7 @@ namespace client_server.Controllers
             {
                 oferta.zarezerwowane = true;
                 oferta.opisRezerwacji = opisRezerwacji;
+                WriteToJsonFile();
                 return "OK";
             }
             return "ERROR";
@@ -92,6 +96,7 @@ namespace client_server.Controllers
             {
                 oferta.zarezerwowane = false;
                 oferta.opisRezerwacji = "";
+                WriteToJsonFile();
                 return "OK";
             }
             return "ERROR";
@@ -106,10 +111,46 @@ namespace client_server.Controllers
             if (oferta != null && oferta.dataSprzedarzy == null)
             {
                 oferta.dataSprzedarzy = DateTime.Now;
+                WriteToJsonFile();
                 return "OK";
             }
             return "ERROR";
 
+        }
+        public static void WriteToJsonFile()
+        {
+            TextWriter writer = null;
+            try
+            {
+                var contentsToWriteToFile = JsonConvert.SerializeObject(_oferty);
+                writer = new StreamWriter("baza.json", false);
+                writer.Write(contentsToWriteToFile);
+            }
+            finally
+            {
+                if (writer != null)
+                    writer.Close();
+            }
+        } 
+       
+        public static List<Oferta> ReadFromJsonFile() 
+        {
+            TextReader reader = null;
+            try
+            {
+                reader = new StreamReader("baza.json");
+                var fileContents = reader.ReadToEnd();
+                return JsonConvert.DeserializeObject<List<Oferta>>(fileContents);
+            }
+            catch (Exception e)
+            {
+                return new List<Oferta>();
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
+            }
         }
 
     }
